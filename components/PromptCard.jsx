@@ -8,6 +8,10 @@ import { useRouter, usePathname } from "next/navigation";
 export default function PromptCard(props) {
   const { post, handleTagClick, handleEdit, handleDelete } = props;
 
+  const { data: session } = useSession();
+  const pathName = usePathname();
+  const router = useRouter();
+
   const [copied, setCopied] = useState("");
 
   const handleCopy = () => {
@@ -49,6 +53,7 @@ export default function PromptCard(props) {
             }
             width={12}
             height={12}
+            alt="Action Icon"
           />
         </div>
       </div>
@@ -60,6 +65,23 @@ export default function PromptCard(props) {
       >
         {post.tag}
       </p>
+
+      {session?.user.id === post.creator._id && pathName === "/profile" && (
+        <div className="mt-5 flex-center gap-4 border-gray-100 pt-3">
+          <p
+            className="font-inter text-sm green_gradient cursor-pointer"
+            onClick={handleEdit}
+          >
+            Edit
+          </p>
+          <p
+            className="font-inter text-sm orange_gradient cursor-pointer"
+            onClick={handleDelete}
+          >
+            Delete
+          </p>
+        </div>
+      )}
     </div>
   );
 }
